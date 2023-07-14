@@ -1,11 +1,11 @@
 #include <raylib.h>
 #include <iostream>
 #include <string>
-using namespace std;
+//Sources
 #include "Ball.h"
 #include "Paddle.h"
 #include "Button.h"
-
+using namespace std;
 
 // Colors
 Color Ocean = Color{255, 0, 0, 1};
@@ -14,22 +14,18 @@ Color Royal_Blue = Color{65, 105, 225, 255};
 // Middle Circle
 Color Light_Green = Color{0, 168, 107, 255};
 
-int player_score = 0;
-int cpu_score = 0;
-int high_score = 0; // New high score variable
-bool gameStarted = false;
-bool gameOver = false; // New state variable
-bool gamePaused = false; // New state variable for pause functionality
-int difficulty = 1;
+//Game Variables
+int player_score, cpu_score, high_score = 0;
+bool gameStarted, gameOver, gamePaused = false;
+int difficulty = 1; // Default Difficulty (Easy)
 int scoreLimit = 10; // Default score limit: 10
 
-
-
+//Class Declarations
 Ball ball;
 Paddle player;
 CpuPaddle cpu;
 
-
+//Create Title Screen
 void DrawTitleScreen(Button& startButton, Button& difficultyButton, Button& scoreLimitButton)
 {
     const int screenWidth = GetScreenWidth();
@@ -42,6 +38,7 @@ void DrawTitleScreen(Button& startButton, Button& difficultyButton, Button& scor
     scoreLimitButton.Draw();
 }
 
+//Create Game Over Screen
 void DrawGameOverScreen(Button& restartButton)
 {
     const int screenWidth = GetScreenWidth();
@@ -62,6 +59,7 @@ void DrawGameOverScreen(Button& restartButton)
     restartButton.Draw();
 }
 
+//Adjust Game Settings
 void UpdateTitleScreen(Button& startButton, Button& difficultyButton, Button& scoreLimitButton)
 {
     if (startButton.IsPressed())
@@ -110,20 +108,21 @@ void UpdateTitleScreen(Button& startButton, Button& difficultyButton, Button& sc
     }
 }
 
+//Update Game Loop
 void UpdateGameOverScreen(Button& restartButton)
 {
     if (restartButton.IsPressed())
     {
         // Reset game state
-        player_score = 0;
-        cpu_score = 0;
-        gameStarted = false;
-        gameOver = false;
+        int player_score, cpu_score = 0;
+        bool gameStarted, gameOver = false;
     }
 }
 
+//Main
 int main()
 {
+    //Create Game Window and Raylib constants
     cout << "Starting the game" << endl;
     const int screen_width = 1280;
     const int screen_height = 800;
@@ -138,12 +137,10 @@ int main()
     cpu.speed = 3.5;
     ball.speed_x = 7;
     ball.speed_y = 7;
-
     player.width = 25;
     player.height = 150;
     player.x = screen_width - player.width - 10;
     player.y = screen_height / 2 - player.height / 2;
-
     cpu.height = 150;
     cpu.width = 25;
     cpu.x = 10;
@@ -171,6 +168,7 @@ int main()
             Rectangle{static_cast<float>(screen_width - 150), static_cast<float>(10), 140, 30},
             Ocean, "P to pause");
 
+    //Core Game Loop
     while (!WindowShouldClose())
     {
         if (!gameStarted)
